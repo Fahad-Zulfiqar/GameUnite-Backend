@@ -24,7 +24,7 @@ const __dirname = path.resolve();
 const uploadsPath = path.join(__dirname, "uploads");
 
 const app = express();
-app.use(cors({ origin: "http://127.0.0.1:3000" }));
+app.use(cors({ origin: "https://game-unite-frontend.vercel.app" }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -61,8 +61,8 @@ app.post("/api/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `http://127.0.0.1:3000/order/${orderId}?payment_status=paid&order_id=${orderId}`,
-      cancel_url: `http://127.0.0.1:3000/order/${orderId}?payment_status=cancelled&order_id=${orderId}`,
+      success_url: `https://game-unite-frontend.vercel.app/order/${orderId}?payment_status=paid&order_id=${orderId}`,
+      cancel_url: `https://game-unite-frontend.vercel.app/order/${orderId}?payment_status=cancelled&order_id=${orderId}`,
     });
 
     res.json({ id: session.id });
