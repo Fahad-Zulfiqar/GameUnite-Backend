@@ -12,7 +12,6 @@ import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import cors from "cors";
 import Stripe from "stripe";
-// import helmet from "helmet";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -24,7 +23,23 @@ const __dirname = path.resolve();
 const uploadsPath = path.join(__dirname, "uploads");
 
 const app = express();
-app.use(cors({ origin: "https://game-unite-frontend.vercel.app" }));
+
+const allowedOrigins = [
+  'https://game-unite-frontend.vercel.app',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
